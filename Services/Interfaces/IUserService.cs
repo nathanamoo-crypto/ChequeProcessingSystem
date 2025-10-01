@@ -1,6 +1,12 @@
-﻿namespace Cheque_Processing_System.Services.Interfaces
+﻿using Cheque_Processing_System.Models;
+
+namespace Cheque_Processing_System.Services.Interfaces
 {
-    public class IUserService
+    public interface IUserService
     {
+        Task<ApplicationUser> RegisterUserAsync(ApplicationUser user, string password);
+        Task<ApplicationUser?> GetUserByIdAsync(string userId);
+        Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
+        Task<bool> AssignRoleAsync(string userId, string role);
     }
 }

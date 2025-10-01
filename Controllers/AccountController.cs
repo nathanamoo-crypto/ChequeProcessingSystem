@@ -21,6 +21,14 @@ namespace ChequeProcessingSystem.Controllers
             return View(accounts);
         }
 
+        // GET: /Account/Details/5
+        public IActionResult Details(int id)
+        {
+            var account = _context.Accounts.Find(id);
+            if (account == null) return NotFound();
+            return View(account);
+        }
+
         // GET: /Account/Create
         public IActionResult Create()
         {
@@ -61,6 +69,27 @@ namespace ChequeProcessingSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(account);
+        }
+
+        // GET: /Account/Delete/5
+        public IActionResult Delete(int id)
+        {
+            var account = _context.Accounts.Find(id);
+            if (account == null) return NotFound();
+            return View(account);
+        }
+
+        // POST: /Account/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var account = _context.Accounts.Find(id);
+            if (account == null) return NotFound();
+
+            _context.Accounts.Remove(account);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

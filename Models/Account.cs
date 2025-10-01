@@ -1,6 +1,20 @@
-﻿namespace Cheque_Processing_System.Models
+﻿using Cheque_Processing_System.Models;
+
+namespace ChequeProcessingSystem.Models
 {
     public class Account
     {
+        public int Id { get; set; }
+
+        public string AccountNumber { get; set; } = string.Empty;
+
+        public string AccountName { get; set; } = string.Empty;
+
+        public decimal Balance { get; set; }
+
+        public string AccountType { get; set; } = string.Empty;
+
+        // Navigation: An Account can have many Cheques
+        public ICollection<Cheque> Cheques { get; set; } = new List<Cheque>();
     }
 }
