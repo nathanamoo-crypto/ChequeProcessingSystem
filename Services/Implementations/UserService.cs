@@ -1,7 +1,7 @@
 ﻿using ChequeProcessingSystem.Models;
-using Cheque_Processing_System.Services.Interfaces;
+using ChequeProcessingSystem.Services.Interfaces;
 
-namespace Cheque_Processing_System.Services.Implementations
+namespace ChequeProcessingSystem.Services.Implementations
 {
     public class UserService : IUserService
     {
