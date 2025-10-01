@@ -24,7 +24,7 @@ namespace ChequeProcessingSystem.Controllers
         {
             var today = System.DateTime.Today;
             var dailyCheques = _context.Cheques
-                .Where(c => c.DateIssued.Date == today)
+                .Where(c => c.IssueDate.Date == today) // changed from DateIssued to IssueDate
                 .ToList();
             return View(dailyCheques);
         }
@@ -33,7 +33,7 @@ namespace ChequeProcessingSystem.Controllers
         public IActionResult Rejected()
         {
             var rejectedCheques = _context.Cheques
-                .Where(c => c.Status == "Rejected")
+                .Where(c => c.Status == "Rejected") // Ensure Status exists in your Cheque model
                 .ToList();
             return View(rejectedCheques);
         }
