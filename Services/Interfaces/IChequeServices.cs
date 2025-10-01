@@ -1,4 +1,4 @@
-﻿using Cheque_Processing_System.Models;
+﻿using ChequeProcessingSystem.Models;
 
 namespace Cheque_Processing_System.Services.Interfaces
 {

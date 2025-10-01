@@ -1,4 +1,4 @@
-namespace Cheque_Processing_System.Models
+namespace ChequeProcessingSystem.Models
 {
     public class ErrorViewModel
     {
