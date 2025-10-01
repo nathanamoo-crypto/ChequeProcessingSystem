@@ -1,19 +1,50 @@
-# Visual Studio temporary files
+# Visual Studio temporary files, build results, and generated files
 .vs/
-*.vscode/
+.vscode/
+*.user
+*.suo
+*.vsidx
+*.dbmdl
 
 # Build results
 bin/
 obj/
 Debug/
 Release/
+x64/
+x86/
 
-# User-specific files
-*.user
-*.suo
-*.vsidx
-*.dbmdl
+# Rider / JetBrains IDE
+.idea/
 
-# Other
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Log files
+*.log
+
+# NuGet packages
+*.nupkg
+*.snupkg
+*.nuspec
+packages/
+*.cache
+*.dll
+*.exe
+
+# Database
+*.mdf
+*.ldf
+
+# Frontend (Node.js, npm, yarn)
 node_modules/
 wwwroot/lib/
+
+# Publish output
+publish/
+dist/
+
+# Backup & temp files
+*.bak
+*.tmp
+*.temp
