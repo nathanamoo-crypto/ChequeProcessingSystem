@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using Cheque_Processing_System.Models;
+using ChequeProcessingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChequeProcessingSystem.Controllers

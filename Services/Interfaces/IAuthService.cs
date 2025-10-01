@@ -1,4 +1,4 @@
-﻿namespace Cheque_Processing_System.Services.Interfaces
+﻿namespace ChequeProcessingSystem.Services.Interfaces
 {
     public interface IAuthService
     {

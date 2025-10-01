@@ -9,4 +9,4 @@ namespace ChequeProcessingSystem.Models
 
         public string Role { get; set; } = "User"; // e.g., Teller, Manager, Admin
     }
-};
+}

@@ -1,4 +1,4 @@
-﻿using Cheque_Processing_System.Models;
+﻿using ChequeProcessingSystem.Models;
 
 namespace ChequeProcessingSystem.Models
 {
