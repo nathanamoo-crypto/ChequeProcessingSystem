@@ -2,7 +2,7 @@ using System.Diagnostics;
 using Cheque_Processing_System.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Cheque_Processing_System.Controllers
+namespace ChequeProcessingSystem.Controllers
 {
     public class HomeController : Controller
     {
