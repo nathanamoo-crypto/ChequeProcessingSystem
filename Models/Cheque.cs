@@ -1,21 +1,29 @@
-﻿namespace ChequeProcessingSystem.Models
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ChequeProcessingSystem.Models
 {
     public class Cheque
     {
-        public int Id { get; set; }
+        [Key]
+        public int ChequeId { get; set; }  // Primary Key
 
-        public string ChequeNumber { get; set; } = string.Empty;
-
+        [Required]
         public decimal Amount { get; set; }
 
-        public DateTime IssuedDate { get; set; }
+        [Required]
+        public DateTime IssueDate { get; set; }
 
-        public DateTime? ClearedDate { get; set; }
+        [Required]
+        public DateTime ExpiryDate { get; set; }
 
-        public string Status { get; set; } = "Pending"; // Pending, Approved, Rejected, Cleared
+        [Required]
+        public string Status { get; set; } = "Pending"; // Pending, Cleared, Bounced
 
         // Foreign Key to Account
+        [ForeignKey("Account")]
         public int AccountId { get; set; }
-        public Account Account { get; set; }
+        public Account Account { get; set; } = null!;
     }
 }
