@@ -1,5 +1,6 @@
 using ChequeProcessingSystem.Data;
 using ChequeProcessingSystem.Models;
+using ChequeProcessingSystem.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -20,11 +21,21 @@ namespace ChequeProcessingSystem.Controllers
         public IActionResult Index()
         {
             var cheques = _context.Cheques
-                                  .Include(c => c.Account) // so HolderName isn’t null
+                                  .Include(c => c.Account)
                                   .ToList();
 
-            return View(cheques);
+            var model = new DashboardViewModel
+            {
+                TotalCheques = cheques.Count,
+                ClearedCheques = cheques.Count(c => c.Status == "Cleared"),
+                BouncedCheques = cheques.Count(c => c.Status == "Bounced"),
+                PendingCheques = cheques.Count(c => c.Status == "Pending"),
+                Cheques = cheques
+            };
+
+            return View(model);
         }
+
 
         public IActionResult Privacy()
         {

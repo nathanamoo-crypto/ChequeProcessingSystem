@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ChequeProcessingSystem.Models;
 
 namespace ChequeProcessingSystem.Data
@@ -17,22 +17,31 @@ namespace ChequeProcessingSystem.Data
         public DbSet<Cheque> Cheques { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
 
-        // Optional: configure relationships and rules
+        // Configure relationships and rules
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // Example: ensure AccountNumber is unique
+            // Ensure AccountNumber is unique
             builder.Entity<Account>()
                 .HasIndex(a => a.AccountNumber)
                 .IsUnique();
 
-            // Example: relationship (Cheque belongs to an Account)
+            // Configure Account → Cheque (1-to-many)
             builder.Entity<Cheque>()
-                .HasOne<Account>()
-                .WithMany()
-                .HasForeignKey(c => c.AccountId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(c => c.Account)           // A cheque belongs to an account
+                .WithMany(a => a.Cheques)         // An account can have many cheques
+                .HasForeignKey(c => c.AccountId)  // FK column
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure precision for money values
+            builder.Entity<Account>()
+                .Property(a => a.Balance)
+                .HasColumnType("decimal(18,2)");
+
+            builder.Entity<Cheque>()
+                .Property(c => c.Amount)
+                .HasColumnType("decimal(18,2)");
         }
     }
 }

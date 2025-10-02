@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,34 +7,33 @@ namespace ChequeProcessingSystem.Models
     public class Cheque
     {
         [Key]
-        public int ChequeId { get; set; }  // Primary Key
+        public int ChequeId { get; set; }
+
+        [Required, StringLength(50)]
+        public string ChequeNumber { get; set; } = string.Empty;
 
         [Required]
-        public string ChequeNumber { get; set; } = string.Empty; // Cheque number
-
-        [Required]
-        public decimal Amount { get; set; } // Money amount
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Amount { get; set; }
 
         [Required]
         public DateTime IssueDate { get; set; }
 
-        public DateTime? ExpiryDate { get; set; }   // Optional expiry
+        public DateTime? ExpiryDate { get; set; }
+        public DateTime? DateCashed { get; set; }
 
-        public DateTime? DateCashed { get; set; }   // When cashed
+        [Required, StringLength(20)]
+        public string Status { get; set; } = "Pending";
 
-        [Required]
-        public string Status { get; set; } = "Pending"; // Pending, Cleared, Bounced
+        public string? ProcessedById { get; set; }
+        public string? Remarks { get; set; }
 
-        public string? ProcessedById { get; set; }  // User ID of staff who processed
-        public string? Remarks { get; set; }        // Notes
-
-        // Foreign Key to Account
-        [ForeignKey("Account")]
+        // ✅ Only ONE FK
         public int AccountId { get; set; }
         public Account Account { get; set; } = null!;
 
-        // Audit fields
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
     }
+
 }

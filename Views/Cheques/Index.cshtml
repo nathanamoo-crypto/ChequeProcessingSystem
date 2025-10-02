@@ -1,43 +1,67 @@
-﻿@model IEnumerable<ChequeProcessingSystem.Models.Cheque>
-@{
-    ViewData["Title"] = "Cheques";
+﻿@model ChequeProcessingSystem.Models.ViewModels.DashboardViewModel
+
+<h2>Cheques Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-light border-primary mb-3">
+            <div class="card-body text-center">
+                <h5>Total</h5>
+                <h3>@Model.TotalCheques</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-success mb-3">
+            <div class="card-body text-center">
+                <h5>Cleared</h5>
+                <h3>@Model.ClearedCheques</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-danger mb-3">
+            <div class="card-body text-center">
+                <h5>Bounced</h5>
+                <h3>@Model.BouncedCheques</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-light border-warning mb-3">
+            <div class="card-body text-center">
+                <h5>Pending</h5>
+                <h3>@Model.PendingCheques</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Cheques == null || !Model.Cheques.Any())
+{
+    <p>No cheques available.</p>
 }
-
-<h2>Cheques</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">+ New Cheque</a>
-</p>
-
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Cheque Number</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Issue Date</th>
-            <th>Account</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
             <tr>
-                <td>@item.ChequeNumber</td>
-                <td>@item.Amount</td>
-                <td>
-                    <span class="badge @(item.Status == "Cleared" ? "badge-success" : item.Status == "Pending" ? "badge-warning" : "badge-danger")">
-                        @item.Status
-                    </span>
-                </td>
-                <td>@item.IssueDate.ToShortDateString()</td>
-                <td>@item.Account.HolderName</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.ChequeId" class="btn btn-sm btn-info">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.ChequeId" class="btn btn-sm btn-success">Edit</a>
-                </td>
+                <th>Cheque Number</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Account Holder</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var cheque in Model.Cheques)
+            {
+                <tr>
+                    <td>@cheque.ChequeNumber</td>
+                    <td>@cheque.Amount.ToString("C")</td>
+                    <td>@cheque.Status</td>
+                    <td>@(cheque.Account?.HolderName ?? "Unknown")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
