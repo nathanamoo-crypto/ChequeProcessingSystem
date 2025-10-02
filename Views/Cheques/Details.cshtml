@@ -1,0 +1,20 @@
+﻿@model ChequeProcessingSystem.Models.Cheque
+@{
+    ViewData["Title"] = "Cheque Details";
+}
+
+<h2>Cheque Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5>Cheque #: @Model.ChequeNumber</h5>
+        <p><strong>Amount:</strong> @Model.Amount</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+        <p><strong>Issue Date:</strong> @Model.IssueDate.ToShortDateString()</p>
+        <p><strong>Expiry Date:</strong> @Model.ExpiryDate.ToShortDateString()</p>
+        <p><strong>Account Holder:</strong> @Model.Account.HolderName</p>
+        <p><strong>Remarks:</strong> @Model.Remarks</p>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary mt-3">Back to List</a>

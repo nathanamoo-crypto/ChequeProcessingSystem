@@ -1,0 +1,43 @@
+﻿@model IEnumerable<ChequeProcessingSystem.Models.Cheque>
+@{
+    ViewData["Title"] = "Cheques";
+}
+
+<h2>Cheques</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">+ New Cheque</a>
+</p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Cheque Number</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Issue Date</th>
+            <th>Account</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ChequeNumber</td>
+                <td>@item.Amount</td>
+                <td>
+                    <span class="badge @(item.Status == "Cleared" ? "badge-success" : item.Status == "Pending" ? "badge-warning" : "badge-danger")">
+                        @item.Status
+                    </span>
+                </td>
+                <td>@item.IssueDate.ToShortDateString()</td>
+                <td>@item.Account.HolderName</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.ChequeId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.ChequeId" class="btn btn-sm btn-success">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
