@@ -1,5 +1,7 @@
+using ChequeProcessingSystem.Data;
 using ChequeProcessingSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace ChequeProcessingSystem.Controllers
@@ -7,9 +9,9 @@ namespace ChequeProcessingSystem.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ChequeContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, ChequeContext context)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
             _context = context;
@@ -17,9 +19,8 @@ namespace ChequeProcessingSystem.Controllers
 
         public IActionResult Index()
         {
-            // Load cheques including Account (so HolderName isn’t null)
             var cheques = _context.Cheques
-                                  .Include(c => c.Account)
+                                  .Include(c => c.Account) // so HolderName isn’t null
                                   .ToList();
 
             return View(cheques);
@@ -38,7 +39,10 @@ namespace ChequeProcessingSystem.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }
