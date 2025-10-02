@@ -1,29 +1,21 @@
-﻿using System;
-
-namespace ChequeProcessingSystem.Models
+﻿public class Cheque
 {
-    public class Cheque
-    {
-        // Primary key
-        public int ChequeId { get; set; }
+    public int ChequeId { get; set; }
 
-        // Cheque details
-        public string ChequeNumber { get; set; } = string.Empty; // Required
-        public double Amount { get; set; }                        // Required
-        public DateTime IssueDate { get; set; }                   // When the cheque was issued
-        public DateTime? DateCashed { get; set; }                 // Nullable: only set when cashed
+    public string ChequeNumber { get; set; } = string.Empty;
+    public double Amount { get; set; }
 
-        // Status tracking
-        public string Status { get; set; } = "Pending";           // Pending, Cleared, Bounced
-        public string? ProcessedById { get; set; }                // User ID of the person who processed the cheque
-        public string? Remarks { get; set; }                      // Optional notes about the cheque
+    public DateTime IssueDate { get; set; }
+    public DateTime? ExpiryDate { get; set; }   // <-- NEW field
+    public DateTime? DateCashed { get; set; }
 
-        // Foreign key relationship
-        public int AccountId { get; set; }                        // Link to Account
-        public Account Account { get; set; } = null!;            // Navigation property
+    public string Status { get; set; } = "Pending";
+    public string? ProcessedById { get; set; }
+    public string? Remarks { get; set; }
 
-        // Optional: audit fields
-        public DateTime CreatedAt { get; set; } = DateTime.Now;  // Auto-set creation timestamp
-        public DateTime? UpdatedAt { get; set; }                 // Track updates
-    }
+    public int AccountId { get; set; }
+    public Account Account { get; set; } = null!;
+
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? UpdatedAt { get; set; }
 }
