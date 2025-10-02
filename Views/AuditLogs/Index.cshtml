@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ChequeProcessingSystem.Models.AuditLog>
+@{
+    ViewData["Title"] = "Audit Logs";
+}
+
+<h2>Audit Logs</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Action</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.Action</td>
+                <td>@item.Timestamp</td>
+            </tr>
+        }
+    </tbody>
+</table>

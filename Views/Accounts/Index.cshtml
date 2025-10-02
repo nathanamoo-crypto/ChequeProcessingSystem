@@ -1,0 +1,34 @@
+﻿@model IEnumerable<ChequeProcessingSystem.Models.Account>
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+<h2>Accounts</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">+ New Account</a>
+</p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Account Number</th>
+            <th>Holder Name</th>
+            <th>Balance</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AccountNumber</td>
+                <td>@item.HolderName</td>
+                <td>@item.Balance</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AccountId" class="btn btn-sm btn-success">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
