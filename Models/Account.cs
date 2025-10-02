@@ -1,17 +1,25 @@
-﻿using ChequeProcessingSystem.Models;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-public class Account
+namespace ChequeProcessingSystem.Models
 {
-    public int Id { get; set; }
+    public class Account
+    {
+        [Key]
+        public int AccountId { get; set; }  // Primary key
 
-    public string AccountNumber { get; set; } = string.Empty;
+        [Required]
+        [StringLength(100)]
+        public string HolderName { get; set; } = string.Empty;  // ✅ Fixes "HolderName not found"
 
-    public string HolderName { get; set; } = string.Empty; // <-- RENAME from AccountName
+        [Required]
+        [StringLength(20)]
+        public string AccountNumber { get; set; } = string.Empty;
 
-    public decimal Balance { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Balance { get; set; }
 
-    public string AccountType { get; set; } = string.Empty;
-
-    // Navigation: An Account can have many Cheques
-    public ICollection<Cheque> Cheques { get; set; } = new List<Cheque>();
+        // Navigation property → one Account can have many Cheques
+        public ICollection<Cheque> Cheques { get; set; } = new List<Cheque>();
+    }
 }

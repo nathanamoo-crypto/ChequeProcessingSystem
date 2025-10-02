@@ -1,14 +1,22 @@
-﻿public class AuditLog
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+
+namespace ChequeProcessingSystem.Models
 {
-    public int Id { get; set; }
+    public class AuditLog
+    {
+        [Key]
+        public int AuditLogId { get; set; }
 
-    public string Action { get; set; } = string.Empty; // e.g., "Cheque Approved"
+        [Required]
+        [StringLength(100)]
+        public string UserName { get; set; } = string.Empty;  // ✅ Fixes "UserName not found"
 
-    public string UserId { get; set; } = string.Empty;
+        [Required]
+        [StringLength(200)]
+        public string Action { get; set; } = string.Empty;
 
-    public string Username { get; set; } = string.Empty;  // <-- NEW
-
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-
-    public string Details { get; set; } = string.Empty;
+        [DataType(DataType.DateTime)]
+        public DateTime Timestamp { get; set; } = DateTime.Now;
+    }
 }
