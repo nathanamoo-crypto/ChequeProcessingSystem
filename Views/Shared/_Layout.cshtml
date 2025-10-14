@@ -2,28 +2,571 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Cheque_Processing_System</title>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Apex Bank ARB Cheque System</title>
+
+    <!-- Framework -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <style>
+        :root {
+            --apex-green: #006B3C; /* Primary green */
+            --apex-dark-green: #004D2D; /* Dark green */
+            --apex-light-green: #008752; /* Light green */
+            --apex-gold: #D4AF37; /* Warm gold accent */
+            --apex-cream: #F8FDF8; /* Light green cream */
+            --apex-white: #FFFFFF;
+            --apex-muted: #5D7A6D; /* Muted green */
+            --apex-border: #E8F5E8; /* Light border green */
+            --surface: #FFFFFF;
+            --surface-alt: #F0F9F0;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --radius-card: 10px;
+            --shadow-soft: 0 4px 20px rgba(0, 107, 60, 0.1);
+            --transition-base: all 0.3s ease;
+        }
+
+        body.banking-shell {
+            font-family: "Inter", "Segoe UI", "Arial", sans-serif;
+            background: var(--apex-cream);
+            color: var(--apex-dark-green);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Site Header */
+        .site-header {
+            background: linear-gradient(135deg, var(--apex-green) 0%, var(--apex-dark-green) 100%);
+            color: white;
+            padding: 0;
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 1040;
+            border-bottom: 3px solid var(--apex-gold);
+        }
+
+        .brand-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .brand-identity {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+            .brand-identity span:first-child {
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: white;
+            }
+
+            .brand-identity span:last-child {
+                font-size: 0.9rem;
+                opacity: 0.95;
+                color: var(--apex-gold);
+                font-weight: 500;
+            }
+
+        .primary-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .primary-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition-base);
+            border: 1px solid transparent;
+        }
+
+            .primary-nav a:hover {
+                background: rgba(255, 255, 255, 0.15);
+                border-color: var(--apex-gold);
+                transform: translateY(-1px);
+            }
+
+        /* Sidebar */
+        .nxl-navigation {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            bottom: 0;
+            width: 280px;
+            background: linear-gradient(180deg, var(--apex-green) 0%, var(--apex-dark-green) 100%);
+            color: #ffffff;
+            z-index: 1030;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-soft);
+            border-right: 2px solid var(--apex-gold);
+        }
+
+            .nxl-navigation.collapsed {
+                width: 80px;
+            }
+
+            .nxl-navigation .navbar-wrapper {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .nxl-navigation .m-header {
+                padding: 1.5rem 1.75rem;
+                border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                background: rgba(0, 0, 0, 0.1);
+            }
+
+            .nxl-navigation .b-brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.75rem;
+                text-decoration: none;
+                color: #ffffff;
+                font-weight: 700;
+                font-size: 1.1rem;
+            }
+
+                .nxl-navigation .b-brand i {
+                    color: var(--apex-gold);
+                }
+
+            .nxl-navigation .navbar-content {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1.25rem 0;
+            }
+
+        .nxl-navbar {
+            list-style: none;
+            margin: 0;
+            padding: 0 1rem;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .nxl-item,
+        .nxl-link {
+            transition: var(--transition-base);
+        }
+
+        .nxl-caption label {
+            font-size: 0.75rem;
+            letter-spacing: 0.2rem;
+            text-transform: uppercase;
+            color: var(--apex-gold);
+            display: block;
+            padding: 1rem 1rem 0.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .nxl-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+            .nxl-link:hover {
+                background: rgba(212, 175, 55, 0.1);
+                color: #ffffff;
+                border-color: var(--apex-gold);
+                transform: translateX(5px);
+            }
+
+            .nxl-link.active {
+                background: linear-gradient(135deg, var(--apex-light-green) 0%, #00A862 100%);
+                color: #ffffff;
+                border-color: var(--apex-gold);
+                box-shadow: 0 4px 12px rgba(0, 135, 82, 0.3);
+            }
+
+        .nxl-micon {
+            width: 24px;
+            display: grid;
+            place-items: center;
+            font-size: 1.1rem;
+            color: var(--apex-gold);
+        }
+
+        .nxl-mtext {
+            transition: var(--transition-base);
+            font-weight: 500;
+        }
+
+        .nxl-navigation.collapsed .nxl-mtext {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .nxl-navigation.collapsed .brand-text {
+            opacity: 0;
+            width: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-footer-card {
+            margin: 1.5rem 1.5rem 0;
+            background: linear-gradient(135deg, var(--apex-light-green) 0%, #00A862 100%);
+            border-radius: var(--radius-card);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition-base);
+            border: 1px solid var(--apex-gold);
+            box-shadow: 0 4px 15px rgba(0, 135, 82, 0.2);
+        }
+
+        .nxl-navigation.collapsed .sidebar-footer-card {
+            opacity: 0;
+            height: 0;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-footer-card i {
+            color: var(--apex-gold);
+            font-size: 2rem;
+        }
+
+        .sidebar-footer-card h6 {
+            color: white;
+            font-weight: 700;
+            margin: 1rem 0 0.5rem;
+        }
+
+        .sidebar-footer-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-footer-card .btn {
+            background: var(--apex-gold);
+            color: var(--apex-dark-green);
+            border: none;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition-base);
+        }
+
+            .sidebar-footer-card .btn:hover {
+                background: #E6B800;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            }
+
+        /* Dashboard Header */
+        .nxl-header {
+            position: sticky;
+            top: 80px;
+            z-index: 1020;
+            margin-left: 280px;
+            transition: var(--transition-base);
+        }
+
+            .nxl-header.collapsed {
+                margin-left: 80px;
+            }
+
+        .header-wrapper {
+            background: linear-gradient(135deg, var(--apex-light-green) 0%, var(--apex-green) 100%);
+            padding: 1.5rem 2rem;
+            color: #ffffff;
+            box-shadow: var(--shadow-soft);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            border-bottom: 3px solid var(--apex-gold);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nxl-head-mobile-toggler,
+        .nxl-navigation-toggle button {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--apex-gold);
+            color: var(--apex-gold);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition-base);
+            font-weight: 600;
+        }
+
+            .nxl-head-mobile-toggler:hover,
+            .nxl-navigation-toggle button:hover {
+                background: var(--apex-gold);
+                color: var(--apex-dark-green);
+                transform: translateY(-1px);
+            }
+
+        .header-right .btn-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--apex-dark-green);
+            background: var(--apex-gold);
+            border: 2px solid transparent;
+            transition: var(--transition-base);
+            font-size: 1.1rem;
+        }
+
+            .header-right .btn-icon:hover {
+                background: #E6B800;
+                color: var(--apex-dark-green);
+                border-color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            }
+
+        /* Main content */
+        .nxl-container {
+            margin-left: 280px;
+            padding: 2rem 2.5rem;
+            transition: var(--transition-base);
+            margin-top: 0;
+            background: var(--apex-cream);
+        }
+
+            .nxl-container.collapsed {
+                margin-left: 80px;
+            }
+
+        /* Responsive Design */
+        @@media (max-width: 992px) {
+            .nxl-navigation {
+                transform: translateX(-100%);
+                top: 80px;
+                width: 280px;
+            }
+
+                .nxl-navigation.mobile-open {
+                    transform: translateX(0);
+                }
+
+            .nxl-header,
+            .nxl-container {
+                margin-left: 0 !important;
+            }
+
+            .header-wrapper {
+                border-radius: 0;
+            }
+
+            .brand-bar {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .primary-nav ul {
+                gap: 1rem;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .primary-nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .brand-bar {
+                padding: 1rem;
+            }
+
+            .nxl-container {
+                padding: 1.5rem;
+            }
+
+            .header-wrapper {
+                padding: 1rem 1.5rem;
+            }
+
+            .header-left h4 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Custom scrollbar for sidebar */
+        .nxl-navigation ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .nxl-navigation ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nxl-navigation ::-webkit-scrollbar-thumb {
+            background: var(--apex-gold);
+            border-radius: 2px;
+        }
+    </style>
 </head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-controller="Home" asp-action="Privacy">Privacy</a></li>
-            </ul>
-        </nav>
+
+<body class="banking-shell">
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="brand-bar">
+            <div class="brand-identity">
+                <span>Apex Bank ARB PLC Ghana</span>
+                <span>Cheque Processing System</span>
+            </div>
+            <nav class="primary-nav">
+                <ul>
+                    <li><a asp-controller="Home" asp-action="Index">Operations Hub</a></li>
+                    <li><a asp-controller="Home" asp-action="Privacy">Compliance &amp; Privacy</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <main role="main" class="container">
+    <!-- Sidebar -->
+    <nav class="nxl-navigation" id="sidebar">
+        <div class="navbar-wrapper">
+            <div class="m-header">
+                <a href="#" class="b-brand">
+                    <i class="bi bi-bank2"></i>
+                    <span class="brand-text">Cheque Suite</span>
+                </a>
+                <button class="nxl-head-mobile-toggler d-lg-none" id="mobileToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+            </div>
+            <div class="navbar-content">
+                <ul class="nxl-navbar">
+                    <li class="nxl-item nxl-caption">
+                        <label>Navigation</label>
+                    </li>
+                    <li class="nxl-item"><a href="#" class="nxl-link active"><span class="nxl-micon"><i class="bi bi-speedometer2"></i></span><span class="nxl-mtext">Processing Center</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-diagram-3"></i></span><span class="nxl-mtext">Clearing Overview</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-clipboard-data"></i></span><span class="nxl-mtext">Audit Reports</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-stack"></i></span><span class="nxl-mtext">Operations Tools</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-inboxes"></i></span><span class="nxl-mtext">Cheque Intake</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-cash-coin"></i></span><span class="nxl-mtext">Cheque Settlement</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-shield-check"></i></span><span class="nxl-mtext">Signature Verification</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-people"></i></span><span class="nxl-mtext">Customer Records</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-journal-check"></i></span><span class="nxl-mtext">Compliance Reviews</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-gear"></i></span><span class="nxl-mtext">Institution Settings</span></a></li>
+                    <li class="nxl-item"><a href="#" class="nxl-link"><span class="nxl-micon"><i class="bi bi-person-badge"></i></span><span class="nxl-mtext">Staff Access</span></a></li>
+                </ul>
+                <div class="sidebar-footer-card">
+                    <i class="bi bi-credit-card-2-front"></i>
+                    <h6 class="mt-3 mb-1">Resource Center</h6>
+                    <p class="mb-3">Download branch checklists and compliance guides.</p>
+                    <button class="btn btn-sm w-100">Download Forms</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <header class="nxl-header" id="pageHeader">
+        <div class="header-wrapper d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div class="header-left">
+                <button class="nxl-navigation-toggle btn btn-sm text-white" id="desktopToggle">
+                    <i class="bi bi-layout-sidebar-inset"></i>
+                </button>
+                <div>
+                    <h4 class="mb-0">Cheque Processing Dashboard</h4>
+                    <small class="text-white-50">Home &gt; Processing Center</small>
+                </div>
+            </div>
+            <div class="header-right d-flex align-items-center gap-2">
+                <button class="btn-icon" id="dateFilterBtn"><i class="bi bi-calendar3"></i></button>
+                <button class="btn-icon" id="notificationsBtn"><i class="bi bi-bell"></i></button>
+                <button class="btn-icon" id="profileBtn"><i class="bi bi-person-circle"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="nxl-container" id="mainContent">
         @RenderBody()
     </main>
 
-    <footer>
-        <p>&copy; 2023 - Cheque_Processing_System - <a asp-controller="Home" asp-action="Privacy">Privacy</a></p>
-    </footer>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById("sidebar");
+        const pageHeader = document.getElementById("pageHeader");
+        const mainContent = document.getElementById("mainContent");
+        const desktopToggle = document.getElementById("desktopToggle");
+        const mobileToggle = document.getElementById("mobileToggle");
 
-    <script src="~/js/site.js"></script>
+        function setCollapsed(collapsed) {
+            sidebar.classList.toggle("collapsed", collapsed);
+            pageHeader.classList.toggle("collapsed", collapsed);
+            mainContent.classList.toggle("collapsed", collapsed);
+        }
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle("mobile-open");
+        }
+
+        desktopToggle?.addEventListener("click", () => {
+            const collapsed = !sidebar.classList.contains("collapsed");
+            setCollapsed(collapsed);
+        });
+
+        mobileToggle?.addEventListener("click", toggleMobileMenu);
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 992) {
+                sidebar.classList.remove("mobile-open");
+            } else {
+                sidebar.classList.remove("collapsed");
+                pageHeader.classList.remove("collapsed");
+                mainContent.classList.remove("collapsed");
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nxl-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            });
+        });
+
+        // Initial setup
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Apex Bank ARB Cheque System loaded successfully');
+        });
+    </script>
 </body>
 </html>
